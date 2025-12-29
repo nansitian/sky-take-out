@@ -89,15 +89,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         //设置密码
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
-        //设置当前记录的创建时间, 修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        //设置当前记录的创建人和修改人的id
-        //获取当前线程的局部变量(登录人的id)
-        Long currentId = BaseContext.getCurrentId();
-        employee.setCreateUser(currentId);
-        employee.setUpdateUser(currentId);
 
         employeeMapper.insert(employee);
     }
@@ -156,12 +147,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         //对象属性拷贝
         BeanUtils.copyProperties(employeeDTO,employee);
-        //设置跟新时间
-        employee.setUpdateTime(LocalDateTime.now());
-        //设置当前修改人的id
-        //获取当前登录人的id
-        Long currentId = BaseContext.getCurrentId();
-        employee.setUpdateUser(currentId);
+
         //密码用md5加密(没有密码)
         //employee.setPassword(DigestUtils.md5DigestAsHex(employee.getPassword().getBytes()));
         employeeMapper.update(employee);
