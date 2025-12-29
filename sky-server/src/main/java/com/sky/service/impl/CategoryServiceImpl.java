@@ -30,12 +30,6 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = new Category();
         //对象属性拷贝
         BeanUtils.copyProperties(categoryDTO,category);
-        //设置跟新时间
-        category.setUpdateTime(LocalDateTime.now());
-        //设置跟新人id
-        //获取跟新人id
-        Long currentId = BaseContext.getCurrentId();
-        category.setUpdateUser(currentId);
         categoryMapper.update(category);
 
     }
@@ -49,15 +43,6 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = new Category();
         //对象属性拷贝
         BeanUtils.copyProperties(categoryDTO,category);
-        //设置跟新时间
-        category.setUpdateTime(LocalDateTime.now());
-        //设置创建时间
-        category.setCreateTime(LocalDateTime.now());
-        //设置跟新人id
-        //获取跟新人id
-        Long currentId = BaseContext.getCurrentId();
-        category.setUpdateUser(currentId);
-        category.setCreateUser(currentId);
         //设置状态,默认为0(禁用)
         category.setStatus(0);
         categoryMapper.insert(category);
@@ -92,12 +77,6 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = new Category();
         category.setStatus(status);
         category.setId(id);
-        //设置跟新时间
-        category.setUpdateTime(LocalDateTime.now());
-        //设置跟新人id
-        //获取跟新人id
-        Long currentId = BaseContext.getCurrentId();
-        category.setUpdateUser(currentId);
         categoryMapper.update(category);
 
     }
