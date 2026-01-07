@@ -77,6 +77,11 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 根据id删除分类
+     * @param id
+     * @return
+     */
     @DeleteMapping
     @ApiOperation("根据id删除分类")
     public Result deleteById(Long id){
@@ -85,6 +90,11 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")
     public Result<List<Category>> selectByType(Integer type){
