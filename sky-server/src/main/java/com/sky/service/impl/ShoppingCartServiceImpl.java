@@ -34,6 +34,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         //判断当前插入购物车的商品是否已经存在了
         ShoppingCart shoppingCart = new ShoppingCart();
+        //在查询条件中添加上用户id
+        Long currentId = BaseContext.getCurrentId();
+        shoppingCart.setUserId(currentId);
         BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
         List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
 
@@ -61,9 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 shoppingCart.setAmount(setmeal.getPrice());
                 shoppingCart.setImage(setmeal.getImage());
             }
-            //添加一些公共的属性, userId number creatTime
-            Long currentId = BaseContext.getCurrentId();
-            shoppingCart.setUserId(currentId);
+            //添加一些公共的属性, number creatTime
             shoppingCart.setNumber(1);
             shoppingCart.setCreateTime(LocalDateTime.now());
             //将购物车的商品数据插入到数据库中
@@ -96,6 +97,31 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         //删除掉当前用户的购物车
         Long userId = BaseContext.getCurrentId();
         shoppingCartMapper.deleteByUserId(userId);
+
+    }
+
+    /**
+     * 减少一个购物车商品
+     * @param shoppingCartDTO
+     */
+    @Override
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        //判断这个商品的数量是否为1
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
+        //查询条件中添加用户id
+        Long currentId = BaseContext.getCurrentId();
+        shoppingCart.setUserId(currentId);
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        shoppingCart = list.get(0);
+        if(shoppingCart.getNumber() == 1){
+            //商品数量为1, 删除商品
+            shoppingCartMapper.deleteById(shoppingCart);
+            return;
+        }
+        //商品数量为多个, 修改商品的数量, 减一
+        shoppingCart.setNumber(shoppingCart.getNumber() - 1);
+        shoppingCartMapper.updateNumberById(shoppingCart);
 
     }
 }
